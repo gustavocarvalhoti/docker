@@ -47,7 +47,7 @@ docker exec -it 10d9eec16eb9 bash -> Executa o ubunto e entra nele para exec com
 docker stop 2fe9b8ad4194
 docker stop -t 0 2fe9b8ad4194 -> Stop sem esperar
 docker stop $(docker ps -qa) -> Para todos os containers
-docker rm -f dc583019693 -> Remove container (-f remove rapidão)
+docker rm -f dc583019693 -> Para o container e já remove (-f remove rapidão)
 docker rmi hello-world -> Remove a imagem
 docker container prune -> Remove todos os containers stopped (TOP)
 docker system prune -a -> Remove os volumes sem uso e um monte de coisa
