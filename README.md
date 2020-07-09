@@ -74,6 +74,9 @@ password: oracle
 
 ### MySQL
 docker run -p 3306:3306 --name database-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
+
+### PostgresSQL
+docker run --name some-postgres -e POSTGRES_PASSWORD=root -d -p 5432:5432 postgres
 ```
 
 ## Wordpress
