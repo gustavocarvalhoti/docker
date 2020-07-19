@@ -77,6 +77,15 @@ docker run -p 3306:3306 --name database-mysql -e MYSQL_ROOT_PASSWORD=root -d mys
 
 ### PostgresSQL
 docker run --name some-postgres -e POSTGRES_PASSWORD=root -d -p 5432:5432 postgres
+
+### Mongo NoSQL
+# Baixa a imagem
+docker pull mongo
+# Remove o container, se existir
+docker stop node-mongoose
+docker container rm node-mongoose
+# Gera o container
+docker run --name node-mongoose -p 27017:27017 -d mongo
 ```
 
 ## Wordpress
