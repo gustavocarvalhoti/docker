@@ -3,15 +3,15 @@
 ## Geral 
 ```
 #Hypervisor     -> Virtualiza os recursos de hardware, utilizar até 90% do hardware
-#Docker         -> Evolução das VMs (Ele nao precisa de sistema operacional, Divide tudo do SO) -> Gerencia containers
+#Docker         -> Evolução das VMs (Ele não precisa de sistema operacional, Divide tudo do SO) -> Gerência containers
 #Docker Compose -> Orquestrador de containers
-#Docker Swarm   -> Multiplos Dockers em Cluster
+#Docker Swarm   -> Múltiplos Dockers em Cluster
 #Docker Hub     -> Repositório https://hub.docker.com/
-#Docker Machine -> Intalar e configurar hosts virtuais
-#Container      -> Igual servidores -> Virtualização -> Contem sua application -> Pode limitar o uso de hardware -> Quando remove a camada de dados vai junto
+#Docker Machine -> Instalar e configurar hosts virtuais
+#Container      -> Igual servidores -> Virtualização -> Contém sua application -> Pode limitar o uso de hardware -> Quando remove a camada de dados vai junto
 #images         -> Uma imagem pode ser composta de várias imagens, se você já tem ele compartilha automaticamente
-#Volumes        -> Onde salva os dados do container
-#Docker hosts   -> Camada onde salva as novas informações do container (salva os volumes)
+#Volumes        -> Onde salvar os dados do container
+#Docker hosts   -> Camada que salva as novas informações do container (salva os volumes)
 #Montando um Dockerfile -> Criar uma imagem a partir da nossa aplicação,
 O Dockerfile define os comandos para executar instalações complexas e com características específicas.
 
@@ -20,7 +20,7 @@ O Dockerfile define os comandos para executar instalações complexas e com cara
 docker version
 docker run hello-world <- Cria o container hello-world, pegou no Docker Hub e executou mostrando a msg e encerrou
 docker run -it ubuntu <- Cria o container e entra no terminal dele
-docker run ubuntu echo 'Oi mundo!' -> Executa o ubunto e passa um comando do linux para ele
+docker run ubuntu echo 'Oi mundo!' -> Executa o ubuntu e passa um comando do linux para ele
 docker run -d dockersamples/static-site -> Roda sem travar o terminal
 docker run -d -P dockersamples/static-site -> O P conecta a porta interna do Docker com a externa (local aleatória)
 docker run -d -P --name site-estatico dockersamples/static-site --> Dando nome aos bois
@@ -43,11 +43,11 @@ docker ps -q -> Lista o ID dos containers rodando
 docker ps -a -> Exibe todos os que já foram criados
 docker start -a -i cd4d4c377361 -> Inicia e entra no container ubuntu (-a = attach)
 docker start --help -> Ver opções
-docker exec -it 10d9eec16eb9 bash -> Executa o ubunto e entra nele para exec comandos
+docker exec -it 10d9eec16eb9 bash -> Executa o ubuntu e entra nele para exec comandos
 docker stop 2fe9b8ad4194
 docker stop -t 0 2fe9b8ad4194 -> Stop sem esperar
 docker stop $(docker ps -qa) -> Para todos os containers
-docker rm -f dc583019693 -> Para o container e já remove (-f remove rapidão)
+docker rm -f dc583019693 -> Para o container e remove (-f remove rapidão)
 docker rmi hello-world -> Remove a imagem
 docker container prune -> Remove todos os containers stopped (TOP)
 docker system prune -a -> Remove os volumes sem uso e um monte de coisa
@@ -95,7 +95,7 @@ apt-get install wget
 wget -qO ee rt.cx/ee && bash ee
 ee site create dev.credicitrus.com.br --wp
 WordPress admin user : Gustavo
-WordPress admin user plassword : 5BomViySQlqZ6FC
+WordPress admin user password : 5BomViySQlqZ6FC
 
 docker start 10d9eec16eb9
 docker exec -it 10d9eec16eb9 bash
@@ -113,7 +113,7 @@ COPY . /var/www <- Copia todos os arquivos locais para a pasta do container
 WORKDIR /var/www <- Executar o comando nessa pasta
 RUN npm install <- Ao Criar o container ele executa o comando
 ENTRYPOINT npm start <- Executa ao iniciar o container
-ENTRYPOINT ["npm","start"] <- Da para usar assim tb
+ENTRYPOINT ["npm","start"] <- Dá para usar assim tb
 EXPOSE 3000 <- O container utiliza a porta 3000
 
 #Ficou assim:
@@ -151,11 +151,11 @@ EXPOSE $PORT
 #Feito o cadastro digite no terminal
 docker login
 gustavocarvalhoti
-12152015
+password
 docker push gustavoc/node -> Subindo a imagem
 ```
 
-## Networking no Docker - Como inteligar diversos container (MySQL, App, Cache)
+## Networking no Docker - Como interligar diversos containers (MySQL, App, Cache)
 ```
 docker run -it ubuntu
 docker inspect 94da
@@ -185,13 +185,13 @@ http://localhost:8080 -> Verifica se deu certo
 Done (Top \o/)
 
 ***************************************************************************************************
-#Docker Compose - Multiplos containers
+#Docker Compose - Múltiplos containers
 #Ele verifica o arquivo docker-compose.yml ("Ialmi") "Receita de bolo"
 
-NGINX "Endnex" - Faz o load balancer, balanceamento de acessos para cada servidor logico
-NGINX "Endnex" - Cuida dos arquivos staticos, CSS, JS, IMG
+NGINX "Endnex" - Faz o load balancer, balanceamento de acessos para cada servidor lógico
+NGINX "Endnex" - Cuida dos arquivos estáticos: CSS, JS, IMG
 
-Mãos a obra, BD + 3Servidores + NGINX
+Mãos a obra, BD + 3 Servidores + NGINX
 cd /home/gustavo/Documents/Docker-volumes/alura-docker-cap06
 Criei o arquivo docker-compose.yml
 version: '3'
@@ -203,7 +203,7 @@ services:
     image: gustavocarvalhoti/nginx
     container_name: nginx
     ports:
-      - "80:80" <- Porta de dentor e fora
+      - "80:80" <- Porta de dentro e fora
     networks:
       - production-network <- O traço - significa que é um ArrayList
     depends_on:
@@ -225,7 +225,7 @@ services:
     networks:
       - production-network
     depends_on:
-      - "mongodb" <- Sobe depois desse
+      - "mongodb" <- Sobe depois esse
   node2:
     build:
       dockerfile: ./docker/alura-books.dockerfile
@@ -280,10 +280,66 @@ docker exec -it alura-books1 ping alura-books2
 #Instalando o docker-compose
 sudo curl -L https://github.com/docker/compose/releases/download/1.15.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-
-***************************************************************************************************
 #Docker Swarm facilita a criação e administração de um cluster de containers.
+#Docker Cloud - Ele instala a máquina virtual na Amazon e sob os containers
+```
 
-***************************************************************************************************
-#Docker Cloud - Ele instala a maquina virtual na Amazon e sob os containers
+## Treinamento Alura - Kubernetes: Pods, Services e ConfigMaps
+```
+Kubernetes:
+Escalabilidade horizontal, gerencia Cluster de máquinas em paralelo executando os containers.
+Orquestrador de containers. Ele sabe quando um container está em processamento alto e pode ativar outro.
+
+Pods:
+Capsula com um ou mais containers
+Cda um tem um endereço IP:10.0.0.1 e os containers dentro tem as portas :8080, :9000.
+Caso todos os conteiners falhem ele morre, nascem para serem substituidos.
+Compartilham namespaces de rede e IPC
+Podem compartilhar volumes
+
+Services: 
+
+ConfigMaps:
+
+Master: Control Plane
+Gerencia o cluster                      - api - recebe e executa - rest
+Mantem e atualiza o estado desejado     - c-m - controler manager
+Recebe a executa novos comandos         - sched - definir aonde o pod será executado e etcd - armazena dados vitais no banco chave valor
+Node:   Nodes
+Executa as aplicações (Pods).           - kubelet - executar pod dentro dos nodes, kube-proxy - comunicação entre os nodes
+
+api - Ela cria um pod, edita replica set (RS), lê os dados de um deploy e deleta volumes, 
+Kubectl  - Ferramenta para se comunicar com a api para Criar, Ler, Atualizar e Remover dados do Cluster via a api rest.
+Minikube - Cria um cluster com um ambiente virtualizado para testarmos
+```
+
+### Install Kubernetes
+```
+https://kubernetes.io/docs/tasks/tools/install-kubectl/
+sudo apt-get install curl -y
+curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x ./kubectl
+sudo mv ./kubectl /usr/local/bin/kubectl
+
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 \ && chmod +x minikube
+sudo mkdir -p /usr/local/bin/
+sudo install minikube /usr/local/bin/
+
+Baixar o Virtual Box
+https://www.virtualbox.org/wiki/Linux_Downloads
+sudo dpkg -i virtualbox-6.1_6.1.12-139181_Ubuntu_bionic_amd64.deb 
+Utilizaremos o driver de virtualização dele
+```
+
+### Commands
+```
+minikube start --vm-driver=virtualbox       <- Criar/Iniciar o Cluster
+Criando um Pod
+kubectl run nginx-pod --image=nginx:latest  <- Imagem que vai baixar, nginx-pod - nome do pod
+kubectl get pods                            <- Verificando
+kubectl get pods --watch                    <- Tempo real
+kubectl describe pod nginx-pod              <- Informações do Pod
+kubectl edit pod nginx-pod                  <- Editar informações do Pod
+https://cursos.alura.com.br/course/kubernetes-pods-services-configmap/task/79659
 ```
