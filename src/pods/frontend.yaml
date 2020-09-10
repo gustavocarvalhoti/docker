@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: frontend
+    labels:
+        app: frontend
+spec:
+    containers:
+        - name: frontend-container
+          image: aluracursos/portal-noticias:1
+          envFrom:
+              - configMapRef:
+                  name: portal-configmap

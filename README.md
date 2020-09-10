@@ -297,9 +297,18 @@ Caso todos os conteiners falhem ele morre, nascem para serem substituidos.
 Compartilham namespaces de rede e IPC
 Podem compartilhar volumes
 
-Services: 
+Services - SVC:
+Abstração para expor aplicações executando em um ou mais pods.
+IP's fixos para comunicação
+DNS para um ou mais pods
+Capas de fazer balanceamento de carga
+SVC é dividido em:
+ClusterIP    - Deixar o IP fixo ṕara comunicação interna dos Pods
+NodePort     - Comunicação com o mundo externo, fora dos Pods, funciona como ClusterIP tb
+LoadBalancer - 
 
 ConfigMaps:
+Armazena as variáveis de ambiente para utilizarmos nos Pods
 
 Master: Control Plane
 Gerencia o cluster                      - api - recebe e executa - rest
@@ -339,7 +348,67 @@ Criando um Pod
 kubectl run nginx-pod --image=nginx:latest  <- Imagem que vai baixar, nginx-pod - nome do pod
 kubectl get pods                            <- Verificando
 kubectl get pods --watch                    <- Tempo real
+kubectl get pods -o wide                    <- Exibe mais informações do Pod, inclusive IP
 kubectl describe pod nginx-pod              <- Informações do Pod
 kubectl edit pod nginx-pod                  <- Editar informações do Pod
 https://cursos.alura.com.br/course/kubernetes-pods-services-configmap/task/79659
+kubectl delete pod nginx-pod                <- Deletar pod, ao Deletar o IP muda
+kubectl delete pods --all                   <- Kill all
+kubectl delete svc --all
+kubectl delete configmap --all
+kubectl get configmap                       <- Ver os configmaps
+kubectl describe configmap database-configmap
+
+#### Executar o arquivo para criar o Pod
+cd examples/
+kubectl apply -f ./first-pod.yaml           <- Create
+kubectl delete -f ./first-pod.yaml          <- Delete
+https://kubeyaml.com/ <- Validador de yaml 
+
+kubectl exec -it news-portal -- bash        <- Entrar no container dentro do Pod
+
+kubectl describe pod news-portal
+Name:         news-portal
+Namespace:    default
+Priority:     0
+Node:         minikube/192.168.99.100
+Status:       Running
+IP:           172.17.0.3                    <- IP do Pod para comunicar dentro do Cluster
+
+ClusterIP - svc-pod-2 - interno
+kubectl apply -f ./svc-pod-2.yaml           <- Criar
+kubectl get svc -o wide                     <- Ler os services
+kubectl exec -it pod-1 -- bash
+curl 10.104.118.88:80
+Para o service encontrar o Pod precisa add a label nop service
+selector: app: second-pod                    <- Label que ele pesquisa
+ports: - port: 80                            <- E roda nessa porta
+No Pod vc precisa adicionar a label tb
+labels: app: second-pod                      <- Agora ele sabe o IP para comunicação dos Pods
+ports: - port: 80                            <- Entrada e container 80
+ports: - port: 9000 targetPort: 80           <- Entrada 9000 e container 80
+
+NodePort - svc-pod-1 - externo
+kubectl get nodes -o wide                   <- Para descobrir o IP no Linux, no Windowns ele reconhece como localhost
+INTERNAL-IP -> 192.168.99.100
+kubectl get svc
+PORT(S) - NodePort -> 80:30893/TCP
+Agora vc consegue acessar no Navegador
+http://192.168.99.100:30893/
+
+Variáveis de ambiente no MySQL
+kubectl exec -it database -- bash
+mysql -u root -p
+q1w2e3r4
+
+kubectl exec -it backend -- bash
+Verificar as variaveis de ambiente utilizadas em bancodedados.php
+
+https://kubernetes.io/docs/concepts/services-networking/service/#nodeport
+
+http://192.168.99.100:30000     <- Ler as noticias
+http://192.168.99.100:30001     <- Cadastrar as noticias
+admin
+admin
+
 ```
