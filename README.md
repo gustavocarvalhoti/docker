@@ -74,6 +74,8 @@ password: oracle
 
 ### MySQL
 docker run -p 3306:3306 --name database-mysql -e MYSQL_ROOT_PASSWORD=root -d mysql:latest
+docker run --name database-mysql --network host -e MYSQL_ROOT_PASSWORD=root -d mysql:5.5
+Se você colocar --network host ele já espoe a porta 3306 utilizada no container
 
 ### PostgresSQL
 docker run --name some-postgres -e POSTGRES_PASSWORD=root -d -p 5432:5432 postgres
