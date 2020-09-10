@@ -353,13 +353,14 @@ kubectl get pods --watch                    <- Tempo real
 kubectl get pods -o wide                    <- Exibe mais informações do Pod, inclusive IP
 kubectl describe pod nginx-pod              <- Informações do Pod
 kubectl edit pod nginx-pod                  <- Editar informações do Pod
-https://cursos.alura.com.br/course/kubernetes-pods-services-configmap/task/79659
 kubectl delete pod nginx-pod                <- Deletar pod, ao Deletar o IP muda
 kubectl delete pods --all                   <- Kill all
 kubectl delete svc --all
 kubectl delete configmap --all
 kubectl get configmap                       <- Ver os configmaps
 kubectl describe configmap database-configmap
+kubectl get replicasets
+kubectl get rs --watch
 
 #### Executar o arquivo para criar o Pod
 cd examples/
@@ -405,12 +406,15 @@ q1w2e3r4
 
 kubectl exec -it backend -- bash
 Verificar as variaveis de ambiente utilizadas em bancodedados.php
-
 https://kubernetes.io/docs/concepts/services-networking/service/#nodeport
-
 http://192.168.99.100:30000     <- Ler as noticias
 http://192.168.99.100:30001     <- Cadastrar as noticias
 admin
 admin
+
+Gerenciar quando um container morre
+Replicasets - rs
+Emcapsula 1 ou mais pods, se falhar ele cria outro
+Deploymentes - deploy
 
 ```
