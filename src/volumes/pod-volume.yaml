@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: pod-volume
+spec:
+    containers:
+        -   name: nginx-container
+            image: nginx:latest
+            volumeMounts:
+                -   mountPath: /volume-container
+                    name: first-volume
+        -   name: jenkins-container
+            image: jenkins:alpine
+            volumeMounts:
+                -   mountPath: /volume-container
+                    name: first-volume
+    volumes:
+        -   name: first-volume
+            hostPath: # Cria na pasta local o volume e compartilha com os Pods
+                path: /home/first-volume
+                type: DirectoryOrCreate # Ele cria o volume dentro do minikube

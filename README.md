@@ -361,6 +361,15 @@ kubectl get configmap                       <- Ver os configmaps
 kubectl describe configmap database-configmap
 kubectl get replicasets
 kubectl get rs --watch
+kubectl get deployments
+kubectl rollout history deployment nginx-deployment <- Histórico
+kubectl apply -f ./nginx-deployment.yaml --record   <- Sobrescrever
+kubectl annotate deploy nginx-deployment kubernetes.io/change-cause="Change to latest" <- Altera o comentário do history
+kubectl rollout undo deploy nginx-deployment --to-revision=2    <- Voltar versão
+kubectl delete deploy nginx-deployment
+kubectl delete -f ./frontend-replicaset.yaml
+kubectl exec -it pod-volume --container nginx-container -- bash
+kubectl exec -it pod-volume --container jenkins-container -- bash
 
 #### Executar o arquivo para criar o Pod
 cd examples/
@@ -412,9 +421,18 @@ http://192.168.99.100:30001     <- Cadastrar as noticias
 admin
 admin
 
-Gerenciar quando um container morre
-Replicasets - rs
+### Replicasets - rs - Gerenciar quando um container morre
 Emcapsula 1 ou mais pods, se falhar ele cria outro
 Deploymentes - deploy
 
+### Deployments
+Auxiliam com controle de versionamento e criam um ReplicaSet automaticamente.
+
+### Recursos para persistir os dados
+Volumes:
+Para compartilhar arquivos entre os pods, seu ciclo de vida depende do Pod.
+Se o Pod morrer os dados são perdidos
+#### Criar a pasta dento do Minikube
+minikube ssh
+cd /home/first-volume
 ```

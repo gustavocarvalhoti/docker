@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: backend-deployment
+spec:
+    replicas: 1
+    template:
+        metadata:
+            name: backend
+            labels:
+                app: backend
+        spec:
+            containers:
+                -   name: backend-container
+                    image: aluracursos/sistema-noticias:1
+                    ports:
+                        -   containerPort: 80
+                    envFrom:
+                        -   configMapRef:
+                                name: system-configmap
+    selector:
+        matchLabels:
+            app: backend
