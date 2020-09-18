@@ -1,0 +1,10 @@
+apiVersion: v1 #Cria drive no Google Cloud Platform
+kind: PersistentVolumeClaim
+metadata:
+    name: images-pvc
+spec:
+    accessModes:
+        - ReadWriteOnce # Um acesso por vez
+    resources:
+        requests:
+            storage: 1Gi

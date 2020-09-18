@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1 #Cria drive no Google Cloud Platform
+kind: StorageClass
+metadata:
+    name: slow
+provisioner: kubernetes.io/gce-pd
+parameters:
+    type: pd-standart
+    fstype: ext4
+    replication-type: none

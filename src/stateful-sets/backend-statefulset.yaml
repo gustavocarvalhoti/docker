@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+    name: backend-statefulset
+spec:
+    replicas: 1
+    template:
+        metadata:
+            name: backend
+            labels:
+                app: backend
+        spec:
+            containers:
+                -   name: backend-container
+                    image: aluracursos/sistema-noticias:1
+                    ports:
+                        -   containerPort: 80
+                    envFrom:
+                        -   configMapRef:
+                                name: system-configmap
+                    volumeMounts:
+                        -   name: images
+                            mountPath: /var/www/html/uploads
+                        -   name: session
+                            mountPath: /tmp
+                    livenessProbe: #Prova de vida do Pod - Ele indicará falha caso o código de retorno seja menor que 200 ou maior/igual a 400.
+                        httpGet:
+                            path: /             #Como está em http://192.168.99.100:30000/ é só colocar o /
+                            port: 80            #Do container
+                        periodSeconds: 10       #Validar a cada 10segundos
+                        failureThreshold: 3     #Com 3 falhas ele reinicia
+                        initialDelaySeconds: 20 #Espera o container subir
+                    readinessProbe: #Define se a aplicação está pronta para receber request, o tempo de rodar o npm run serve
+                        httpGet:
+                            path: /inserir_noticias.php
+                            port: 80
+                        periodSeconds: 10
+                        failureThreshold: 5
+                        initialDelaySeconds: 3
+            volumes:
+                -   name: images
+                    persistentVolumeClaim:
+                        claimName: images-pvc
+                -   name: session
+                    persistentVolumeClaim:
+                        claimName: session-pvc
+
+    selector:
+        matchLabels:
+            app: backend
+    serviceName: svc-backend

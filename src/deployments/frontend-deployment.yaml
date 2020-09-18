@@ -11,13 +11,30 @@ spec:
                 app: frontend
         spec:
             containers:
-                - name: frontend-container
-                  image: aluracursos/portal-noticias:1
-                  ports:
-                      - containerPort: 80
-                  envFrom:
-                      - configMapRef:
-                            name: portal-configmap
+                -   name: frontend-container
+                    image: aluracursos/portal-noticias:1
+                    ports:
+                        -   containerPort: 80
+                    envFrom:
+                        -   configMapRef:
+                                name: portal-configmap
+                    livenessProbe: #Prova de vida do Pod - Ele indicará falha caso o código de retorno seja menor que 200 ou maior/igual a 400.
+                        httpGet:
+                            path: /             #Como está em http://192.168.99.100:30000/ é só colocar o /
+                            port: 80            #Do container
+                        periodSeconds: 10       #Validar a cada 10segundos
+                        failureThreshold: 3     #Com 3 falhas ele reinicia
+                        initialDelaySeconds: 20 #Espera o container subir - status >= 200 e <=400 está OK
+                    readinessProbe:
+                        httpGet:
+                            path: /
+                            port: 80
+                        periodSeconds: 10
+                        failureThreshold: 5
+                        initialDelaySeconds: 3
+                    resources:          # Cada pod vai pedir 10 milicors do CPU
+                        requests:
+                            cpu: 10m
     selector:
         matchLabels:
             app: frontend

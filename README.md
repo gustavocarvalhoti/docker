@@ -370,6 +370,13 @@ kubectl delete deploy nginx-deployment
 kubectl delete -f ./frontend-replicaset.yaml
 kubectl exec -it pod-volume --container nginx-container -- bash
 kubectl exec -it pod-volume --container jenkins-container -- bash
+kubectl get pv                                      <- Persistence volums
+kubectl get pv                                      <- Persistence volums claim
+kubectl get sc                                      <- Storage class
+kubectl get hpa      
+kubectl describe hpa frontend-hpa         
+minikube addons list                                <- Extennções do Minikube
+minikube addons enable metrics-server               <- Ativa as métricas para utilizar o HPA                      
 
 #### Executar o arquivo para criar o Pod
 cd examples/
@@ -383,7 +390,7 @@ kubectl describe pod news-portal
 Name:         news-portal
 Namespace:    default
 Priority:     0
-Node:         minikube/192.168.99.100
+Node:         minikube/192.168.99.127
 Status:       Running
 IP:           172.17.0.3                    <- IP do Pod para comunicar dentro do Cluster
 
@@ -402,11 +409,11 @@ ports: - port: 9000 targetPort: 80           <- Entrada 9000 e container 80
 
 NodePort - svc-pod-1 - externo
 kubectl get nodes -o wide                   <- Para descobrir o IP no Linux, no Windowns ele reconhece como localhost
-INTERNAL-IP -> 192.168.99.100
+INTERNAL-IP -> 192.168.99.127
 kubectl get svc
 PORT(S) - NodePort -> 80:30893/TCP
 Agora vc consegue acessar no Navegador
-http://192.168.99.100:30893/
+http://192.168.99.127:30893/
 
 Variáveis de ambiente no MySQL
 kubectl exec -it database -- bash
@@ -416,8 +423,8 @@ q1w2e3r4
 kubectl exec -it backend -- bash
 Verificar as variaveis de ambiente utilizadas em bancodedados.php
 https://kubernetes.io/docs/concepts/services-networking/service/#nodeport
-http://192.168.99.100:30000     <- Ler as noticias
-http://192.168.99.100:30001     <- Cadastrar as noticias
+http://192.168.99.127:30000     <- Ler as noticias
+http://192.168.99.127:30001     <- Cadastrar as noticias
 admin
 admin
 
@@ -428,11 +435,36 @@ Deploymentes - deploy
 ### Deployments
 Auxiliam com controle de versionamento e criam um ReplicaSet automaticamente.
 
-### Recursos para persistir os dados
+### Recursos para persistir os dados = Persistent Volum
 Volumes:
 Para compartilhar arquivos entre os pods, seu ciclo de vida depende do Pod.
 Se o Pod morrer os dados são perdidos
 #### Criar a pasta dento do Minikube
 minikube ssh
 cd /home/first-volume
+
+### Storage Classes - Cria o PV acima no GCP - Google Cloud Platform
+storage-class.yaml
+
+### StatefulSets - Persiste os dados mesmo que o Pod morra
+O persistent volume clain aponta para um persistent volum
+Ao deletar o Pod agora não perde sessão e imagens
+images-pvc.yaml
+session-pvc.yaml
+backend-statefulset.yaml <- Esse utiliza os anteriores para persistir
+
+### Probes - Prova de vida do Pod utilizado como parâmetro para reiniciar o Pod
+Liveness - Fazendo get - utilizei no frontend-deployment.yaml
+Readness - Define se a aplicação está pronta para receber request, tempo para rodar o npm run serve
+Há um terceiro tipo de probe voltado para aplicações legadas, o Startup Probe. 
+Algumas aplicações legadas exigem tempo adicional para inicializar na primeira vez. 
+Nem sempre Liveness ou Readiness Probes vão conseguir resolver de maneira simples os problemas de inicialização de aplicações legadas.
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-startup-probes
+
+### Escalando pods automaticamente - Horizontal Pod Autoscaler - baseado no consumo de CPU
+kubectl get hpa
+NAME           REFERENCE                        TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+frontend-hpa   Deployment/frontend-deployment   <unknown>/50%   1         10        3          31s
+Ele cria e mata as replicas automaticamente \0/
+stress.sh -> Faz um monte de request para simular o stress da aplicação
 ```
