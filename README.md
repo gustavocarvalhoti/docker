@@ -1,6 +1,7 @@
 # Comandos Docker
 
-## Geral 
+## Geral
+
 ```
 #Hypervisor     -> Virtualiza os recursos de hardware, utilizar até 90% do hardware
 #Docker         -> Evolução das VMs (Ele não precisa de sistema operacional, Divide tudo do SO) -> Gerência containers
@@ -58,6 +59,7 @@ docker history hello-world -> Lista as camadas da imagem
 ```
 
 ## Criando banco de dados
+
 ```
 ### ORACLE
 https://hub.docker.com/r/wnameless/oracle-xe-11g/
@@ -91,6 +93,7 @@ docker run --name node-mongoose -p 27017:27017 -d mongo
 ```
 
 ## Wordpress
+
 ```
 https://easyengine.io/docs/install/
 apt-get install wget
@@ -106,7 +109,8 @@ docker exec -it 10d9eec16eb9 bash
 /etc/init.d/nginx start
 ```
 
-##  Montando um Dockerfile - Criar uma imagem do aplicativo
+## Montando um Dockerfile - Criar uma imagem do aplicativo
+
 ```
 ### Criar um arquivo Dockerfile na pasta que vc quer -> Colocar o arquivo na pasta que vc quer montar
 FROM node:latest <- baseada o node, da para escolher a versão
@@ -158,6 +162,7 @@ docker push gustavoc/node -> Subindo a imagem
 ```
 
 ## Networking no Docker - Como interligar diversos containers (MySQL, App, Cache)
+
 ```
 docker run -it ubuntu
 docker inspect 94da
@@ -287,6 +292,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 ## Treinamento Alura - Kubernetes: Pods, Services e ConfigMaps
+
 ```
 Kubernetes:
 Escalabilidade horizontal, gerencia Cluster de máquinas em paralelo executando os containers.
@@ -325,6 +331,7 @@ Minikube - Cria um cluster com um ambiente virtualizado para testarmos
 ```
 
 ### Install Kubernetes
+
 ```
 https://kubernetes.io/docs/tasks/tools/install-kubectl/
 sudo apt-get install curl -y
@@ -344,6 +351,7 @@ Utilizaremos o driver de virtualização dele
 ```
 
 ### Commands
+
 ```
 minikube start --vm-driver=virtualbox       <- Criar/Iniciar o Cluster
 Criando um Pod
@@ -467,4 +475,10 @@ NAME           REFERENCE                        TARGETS         MINPODS   MAXPOD
 frontend-hpa   Deployment/frontend-deployment   <unknown>/50%   1         10        3          31s
 Ele cria e mata as replicas automaticamente \0/
 stress.sh -> Faz um monte de request para simular o stress da aplicação
+```
+
+## Criando banco de dados no docker hub
+
+```
+Verificar a pasta create-image-mysql
 ```
