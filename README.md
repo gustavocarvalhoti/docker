@@ -477,7 +477,7 @@ Ele cria e mata as replicas automaticamente \0/
 stress.sh -> Faz um monte de request para simular o stress da aplicação
 ```
 
-## Criando banco de dados no docker hub
+## Criando banco de dados no Docker Hub
 
 ```
 Verificar a pasta create-image-mysql
